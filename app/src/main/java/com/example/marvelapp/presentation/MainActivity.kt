@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.example.marvelapp.R
 import com.example.marvelapp.databinding.ActivityMainBinding
 
@@ -23,7 +24,23 @@ class MainActivity : AppCompatActivity() {
 
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            setOf()
+
+           setOf(
+                R.id.charactersFragment,
+                R.id.favoritiesFragment,
+                R.id.aboutFragment
+            )
         )
+        binding.bottomNavMain.setupWithNavController(navController)
+        binding.toolbarApp.setupWithNavController(navController,appBarConfiguration)
+
+        // não exibe botão de voltar se for o primeiro fluxo da tela.
+        navController.addOnDestinationChangedListener{_,destination,_ ->
+            val isTopLevelDestination = appBarConfiguration.topLevelDestinations.contains(destination.id)
+            if(!isTopLevelDestination) {
+                binding.toolbarApp.setNavigationIcon(R.drawable.ic_back)
+            }
+        }
+
     }
 }
