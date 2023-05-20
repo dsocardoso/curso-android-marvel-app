@@ -12,3 +12,4 @@ interface MarvelApi {
         queries: Map<String, String>
     ): DataWrapperResponse
 }
+
