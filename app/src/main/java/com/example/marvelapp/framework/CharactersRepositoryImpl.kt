@@ -5,13 +5,14 @@ import br.com.core.data.repository.CharactersRemoteDataSource
 import br.com.core.data.repository.CharactersRepository
 import br.com.core.domain.model.Character
 import com.example.marvelapp.framework.network.response.DataWrapperResponse
+import com.example.marvelapp.framework.paging.CharactersPagingSource
 import javax.inject.Inject
 
-class CharactersRepositoryImp @Inject constructor(
+class CharactersRepositoryImpl @Inject constructor(
     private val remoteDataSource: CharactersRemoteDataSource<DataWrapperResponse>
 ) : CharactersRepository {
 
     override fun getCharacteres(query: String): PagingSource<Int, Character> {
-       return CharacteresPaging()
+       return CharactersPagingSource(remoteDataSource, query)
     }
 }
