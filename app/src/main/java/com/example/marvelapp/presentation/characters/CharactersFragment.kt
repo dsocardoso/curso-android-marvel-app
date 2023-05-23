@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import br.com.core.domain.model.Character
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.marvelapp.databinding.FragmentCharactersBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CharactersFragment : Fragment() {
@@ -15,6 +17,8 @@ class CharactersFragment : Fragment() {
     //back property
     private var _binding: FragmentCharactersBinding? = null
     private val binding: FragmentCharactersBinding get() = _binding!!
+
+    private val viewModel: CharactersViewModel by viewModels()
 
     private val charactersAdapter = CharacteresAdapter()
 
@@ -32,27 +36,17 @@ class CharactersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCharactersAdapter()
-        @Suppress("MaxLineLength")
-        charactersAdapter.submitList(
-            listOf(
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg"),
-                Character("Spider Man", "https://meups.com.br/wp-content/uploads/2022/12/marvels-spider-man-900x503.jpg")
-
-            )
-        )
+        lifecycleScope.launch {
+            viewModel.charactersPagingData("").collect { pagingData ->
+                charactersAdapter.submitData(pagingData)
+            }
+        }
 
     }
 
     private fun initCharactersAdapter() {
         with(binding.recycleCharacters) {
+            scrollToPosition(0)
             setHasFixedSize(true)
             adapter = charactersAdapter
         }

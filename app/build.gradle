@@ -27,7 +27,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "PUBLIC_KEY", apikeyProperties['PUBLIC_KEY'])
         buildConfigField("String", "PRIVATE_KEY", apikeyProperties['PRIVATE_KEY'])
-        buildConfigField("String", "BASE_URL", '"https://gateway.marvem.com/v1/public/"')
+        buildConfigField("String", "BASE_URL", '"https://gateway.marvel.com/v1/public/"')
     }
 
     buildTypes {
