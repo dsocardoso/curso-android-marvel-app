@@ -81,7 +81,8 @@ class CharactersPagingSourceTest {
         val result = charactersPagingSource.load(
             PagingSource.LoadParams.Refresh(
                 key = null,
-                loadSize = 2,                placeholdersEnabled = false
+                loadSize = 2,
+                placeholdersEnabled = false
             )
         )
 
